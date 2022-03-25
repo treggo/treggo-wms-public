@@ -6,7 +6,6 @@ const screen = blessed.screen({
     smartCSR: true
 });
 screen.key(['q', 'C-c', 'escape'], function quit() { return process.exit(0); });
-screen.key(['c'], function quit() { return q = {scans: 0,oks: 0,errors: 0}});
 
 const table = blessed.table({ top: 3, border: 'line', width: "30%" });
 const log = blessed.log({ top: 3, border: 'line', left: "30%" });
@@ -25,7 +24,7 @@ input.on('submit', () => {
     input.focus();
     q.scans++;
     updateStatus()
-    axios.post("https://" + args.url + "/0/point/checkin", { tag: text, pistol: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
+    axios.post("https://" + args.url + "/0/point/checkin", { tag: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             q.oks++;
             updateStatus()
