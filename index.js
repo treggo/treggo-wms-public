@@ -6,6 +6,7 @@ const screen = blessed.screen({
     smartCSR: true
 });
 screen.key(['q', 'C-c', 'escape'], function quit() { return process.exit(0); });
+screen.key(['c'], function quit() { return q = {scans: 0,oks: 0,errors: 0}});
 
 const table = blessed.table({ top: 3, border: 'line', width: "30%" });
 const log = blessed.log({ top: 3, border: 'line', left: "30%" });
@@ -14,7 +15,7 @@ const input = blessed.textbox({ height: 3, border: 'line', inputOnFocus: true })
 let q = {
     scans: 0,
     oks: 0,
-    errors: 0,
+    errors: 0
 }
 
 input.key(['enter'], () => input.submit());
@@ -30,7 +31,9 @@ input.on('submit', () => {
             updateStatus()
         })
         .catch((err) => {
+            log.log(text)
             log.log(err.toString())
+            log.log(JSON.stringify(err.response.data))
             q.errors++;
             updateStatus()
         })
