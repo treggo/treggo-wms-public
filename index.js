@@ -24,7 +24,7 @@ input.on('submit', () => {
     input.focus();
     q.scans++;
     updateStatus()
-    axios.post("https://" + args.url + "/0/point/checkin", { pistol: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
+    axios.post("https://" + args.url + "/0/point/checkin", { tag: text, pistol: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             q.oks++;
             updateStatus()
