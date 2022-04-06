@@ -57,7 +57,9 @@ function updateStatus() {
     }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             table.setData(response.data);
+            input.focus();
             screen.render();
+            input.focus();
         })
         .catch((err) => {
         })
