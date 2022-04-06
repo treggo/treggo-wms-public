@@ -27,6 +27,7 @@ input.on('submit', () => {
     axios.post("http://" + args.url + "/0/point/checkin", { tag: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             q.oks++;
+            log.log(JSON.stringify(response.data.message))
             updateStatus()
         })
         .catch((err) => {
