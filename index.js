@@ -7,7 +7,7 @@ const screen = blessed.screen({
 });
 screen.key(['q', 'C-c', 'escape'], function quit() { return process.exit(0); });
 
-const table = blessed.table({ top: 3, border: 'line', width: "30%" });
+const table = blessed.listtable({ top: 3, border: 'line', width: "30%" });
 const log = blessed.log({ top: 3, border: 'line', left: "30%" });
 const input = blessed.textbox({ height: 3, border: 'line', inputOnFocus: true });
 
@@ -24,7 +24,7 @@ input.on('submit', () => {
     input.focus();
     q.scans++;
     updateStatus()
-    axios.post("https://" + args.url + "/0/point/checkin", { tag: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
+    axios.post("http://" + args.url + "/0/point/checkin", { tag: text, scanner: args.scanner }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             q.oks++;
             updateStatus()
@@ -50,10 +50,15 @@ updateStatus()
 screen.render();
 
 function updateStatus() {
-    table.setData([
-        ['Escaneos', `${q.scans}`],
-        ['Correctos', `${q.oks}`],
-        ['Erroneos', `${q.errors}`]
-    ]);
-    screen.render();
+    axios.post("http://" + args.url + "/0/point/statistics", {
+        'Escaneos': `${q.scans}`,
+        'Correctos': `${q.oks}`,
+        'Erroneos': `${q.errors}`
+    }, { headers: { Authorization: "Bearer " + args.secret } })
+        .then((response) => {
+            table.setData(response.data);
+            screen.render();
+        })
+        .catch((err) => {
+        })
 }
