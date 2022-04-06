@@ -7,7 +7,7 @@ const screen = blessed.screen({
 });
 screen.key(['q', 'C-c', 'escape'], function quit() { return process.exit(0); });
 
-const table = blessed.listtable({ top: 3, border: 'line', width: "30%" });
+const table = blessed.table({ top: 3, border: 'line', width: "30%" });
 const log = blessed.log({ top: 3, border: 'line', left: "30%" });
 const input = blessed.textbox({ height: 3, border: 'line', inputOnFocus: true });
 
@@ -58,9 +58,7 @@ function updateStatus() {
     }, { headers: { Authorization: "Bearer " + args.secret } })
         .then((response) => {
             table.setData(response.data);
-            input.focus();
             screen.render();
-            input.focus();
         })
         .catch((err) => {
         })
